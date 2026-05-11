@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentgate"
+version = "0.1.0"
+description = "License & Policy Enforcement SDK for AI Agents"
+requires-python = ">=3.9"
+dependencies = ["httpx>=0.25.0"]
+
+[project.urls]
+Homepage = "https://github.com/molder-opina/agentgate"
+Repository = "https://github.com/molder-opina/agentgate"

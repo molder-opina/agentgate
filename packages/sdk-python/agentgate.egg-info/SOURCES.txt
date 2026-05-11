@@ -1,0 +1,8 @@
+agentgate.py
+pyproject.toml
+setup.py
+agentgate.egg-info/PKG-INFO
+agentgate.egg-info/SOURCES.txt
+agentgate.egg-info/dependency_links.txt
+agentgate.egg-info/requires.txt
+agentgate.egg-info/top_level.txt
