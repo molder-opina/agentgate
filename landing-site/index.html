@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AgentGate — Auth0 for AI Agents. License, govern, and monetize AI agent workloads.">
+  <title>AgentGate — Policy Engine for AI Agents</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #1a1a24;
+      --border: #222233;
+      --text: #c8ccd4;
+      --text-dim: #6b6f7b;
+      --accent: #00d4ff;
+      --accent2: #7b2ff7;
+      --green: #00e68a;
+      --red: #ff4d6a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Nav */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 5rem 0 4rem;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: var(--bg3);
+      color: var(--accent);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(0,212,255,0.2);
+    }
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 0%, #c8ccd4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+    }
+    .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+    .btn-secondary {
+      background: var(--bg3);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+    .btn-sm { padding: 0.5rem 1.2rem; font-size: 0.85rem; }
+
+    /* Code block */
+    .code-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2.5rem auto;
+      max-width: 650px;
+      text-align: left;
+      font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    .code-block .comment { color: var(--text-dim); }
+    .code-block .keyword { color: var(--accent2); }
+    .code-block .string { color: var(--green); }
+    .code-block .func { color: var(--accent); }
+    .code-block .op { color: #ff79c6; }
+
+    /* Section */
+    section { padding: 4rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-label {
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .section-desc {
+      color: var(--text-dim);
+      font-size: 1.05rem;
+      max-width: 600px;
+    }
+
+    /* Use Cases */
+    .use-cases {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .use-case {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .use-case:hover { border-color: var(--accent); }
+    .use-case .icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .use-case h3 { font-size: 1rem; color: #fff; margin-bottom: 0.5rem; }
+    .use-case p { font-size: 0.85rem; color: var(--text-dim); }
+    .use-case .problem {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--red);
+      opacity: 0.8;
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .pricing-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .pricing-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(0,212,255,0.05), transparent);
+    }
+    .pricing-card .name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .pricing-card .price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .pricing-card .price span {
+      font-size: 1rem;
+      color: var(--text-dim);
+      font-weight: 400;
+    }
+    .pricing-card .freq {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+    .pricing-card ul {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+    .pricing-card li {
+      font-size: 0.85rem;
+      color: var(--text);
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-card li:last-child { border: none; }
+
+    /* Architecture diagram */
+    .arch {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+    .arch-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .arch-node {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .arch-arrow {
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Nav -->
+    <nav>
+      <div class="logo">🔐 AgentGate</div>
+      <ul class="nav-links">
+        <li><a href="#use-cases">Use Cases</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://github.com/youruser/agentgate" target="_blank">GitHub</a></li>
+        <li><a href="https://agentgate.yourdomain.com/dashboard" target="_blank" class="nav-cta">Dashboard</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="tag">Open Source Policy Engine • v0.1.0</div>
+      <h1>Auth0 <span>for AI Agents</span></h1>
+      <p>License, govern, and monetize AI agent workloads. Policy validation, usage quotas, rate limiting, and revocation — all in one engine.</p>
+
+      <div class="code-block">
+<span class="comment"># Install</span>
+npm install @agentgate/sdk
+
+<span class="comment">// Initialize</span>
+<span class="keyword">const</span> gate = <span class="keyword">new</span> <span class="func">AgentGate</span>({
+  server: <span class="string">'https://agentgate.yourdomain.com'</span>,
+  agentId: <span class="string">'ag-xxx'</span>,
+  apiKey: <span class="string">'secret'</span>,
+});
+
+<span class="comment">// Validate before any tool execution</span>
+<span class="keyword">const</span> result = <span class="keyword">await</span> gate.<span class="func">can</span>({ tool: <span class="string">'browser'</span> });
+<span class="keyword">if</span> (result.allowed) {
+  <span class="keyword">await</span> runYourAgent();
+  <span class="keyword">await</span> gate.consume({ tool: <span class="string">'browser'</span>, tokens: 1500 });
+}
+      </div>
+
+      <div class="cta-group">
+        <a href="https://github.com/youruser/agentgate" class="btn btn-primary">⬇ Download SDK</a>
+        <a href="https://github.com/youruser/agentgate" class="btn btn-secondary">★ Star on GitHub</a>
+      </div>
+    </div>
+
+    <!-- Use Cases -->
+    <section id="use-cases">
+      <div class="section-label">Use Cases</div>
+      <h2>Build AI agents with governance built-in</h2>
+      <p class="section-desc">No more hardcoded .env keys. No more runaway agent costs. Every tool execution is validated, metered, and logged.</p>
+
+      <div class="use-cases">
+        <div class="use-case">
+          <div class="icon">🔌</div>
+          <h3>MCP Tools</h3>
+          <p>Control which agents can access which tools. Full ACL + quota per agent.</p>
+          <div class="problem">Problem: Anyone with the key can use your MCP tool</div>
+        </div>
+        <div class="use-case">
+          <div class="icon">🤖</div>
+          <h3>AI Wrappers</h3>
+          <p>No more hardcoded API keys. Policy engine controls model access and billing.</p>
+          <div class="problem">Problem: Hardcoded .env, no usage limits</div>
+        </div>
+        <div class="use-case">
+          <div class="icon">🧠</div>
+          <h3>CrewAI / AutoGen</h3>
+          <p>Multi-agent systems with tenant isolation, governance, and compliance logging.</p>
+          <div class="problem">Problem: No agent isolation, no governance</div>
+        </div>
+        <div class="use-case">
+          <div class="icon">🌐</div>
+          <h3>Browser Agents</h3>
+          <p>Limit concurrent browser sessions. Meter usage per agent.</p>
+          <div class="problem">Problem: Agents run unlimited parallel sessions</div>
+        </div>
+        <div class="use-case">
+          <div class="icon">💻</div>
+          <h3>Coding Agents</h3>
+          <p>Control token/execution limits. Prevent infinite loops and runaway costs.</p>
+          <div class="problem">Problem: Runaway token consumption, no limits</div>
+        </div>
+        <div class="use-case">
+          <div class="icon">🔍</div>
+          <h3>Research Agents</h3>
+          <p>Meter premium searches. Control access to data sources.</p>
+          <div class="problem">Problem: Unlimited premium data access</div>
+        </div>
+      </div>
+
+      <!-- Architecture -->
+      <div class="arch">
+        <h3 style="color:#fff; margin-bottom: 0.5rem;">How it works</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem;">Every tool execution goes through the policy engine</p>
+        <div class="arch-flow">
+          <div class="arch-node">🤖 AI Agent</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">📋 gate.can({ tool })</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node" style="border-color: var(--accent);">🔐 Policy Engine</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">⚡ Execute</div>
+        </div>
+        <div class="arch-flow" style="margin-top: 1rem;">
+          <div class="arch-node">📝 gate.consume()</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">📊 Quotas & Metering</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">📜 Audit Log</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">💰 Billing</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section style="border-top: 1px solid var(--border);">
+      <div class="section-label">Features</div>
+      <h2>5 layers of policy enforcement</h2>
+      <p class="section-desc">Every agent execution is checked against 5 policy layers in milliseconds.</p>
+
+      <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+        <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">1. Tool ACL</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim);">Define which tools each agent can access. web_search, browser, mcp_execute, code_run, multi_agent.</p>
+        </div>
+        <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">2. Daily Quotas</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim);">Max runs per day per agent. Prevents runaway executions.</p>
+        </div>
+        <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">3. Monthly Token Metering</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim);">Track model token consumption per agent per month. Auto-decline when exceeded.</p>
+        </div>
+        <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">4. Concurrent Limits</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim);">Max simultaneous agent sessions. Track start/stop in real time.</p>
+        </div>
+        <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">5. Rate Limiting</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim);">Sliding window rate limit per agent. Configurable RPM.</p>
+        </div>
+        <div style="background: var(--bg2); border: 1px solid var(--accent2); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">+ 6. Revocation</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim);">Instantly disable any agent. Full audit trail. Enterprise compliance.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing">
+      <div class="section-label">Pricing</div>
+      <h2>Start free. Scale when ready.</h2>
+      <p class="section-desc">Self-host the policy engine for free. Pay only for the agent tiers you need.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="name">Free</div>
+          <div class="price">$0</div>
+          <div class="freq">forever</div>
+          <ul>
+            <li>10 runs / day</li>
+            <li>1,000 tokens / month</li>
+            <li>1 concurrent session</li>
+            <li>web_search only</li>
+            <li>2 requests / minute</li>
+          </ul>
+          <a href="https://github.com/youruser/agentgate" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">Get Started</a>
+        </div>
+        <div class="pricing-card">
+          <div class="name">Starter</div>
+          <div class="price">$29<span>/mo</span></div>
+          <div class="freq">per agent</div>
+          <ul>
+            <li>50 runs / day</li>
+            <li>10,000 tokens / month</li>
+            <li>2 concurrent sessions</li>
+            <li>+ code_run</li>
+            <li>10 requests / minute</li>
+          </ul>
+          <a href="#" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">Subscribe</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="name">Pro</div>
+          <div class="price">$79<span>/mo</span></div>
+          <div class="freq">per agent</div>
+          <ul>
+            <li>200 runs / day</li>
+            <li>50,000 tokens / month</li>
+            <li>5 concurrent sessions</li>
+            <li>+ browser, mcp_execute</li>
+            <li>30 requests / minute</li>
+          </ul>
+          <a href="#" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;">Subscribe</a>
+        </div>
+        <div class="pricing-card">
+          <div class="name">Enterprise</div>
+          <div class="price">$299<span>/mo</span></div>
+          <div class="freq">per agent</div>
+          <ul>
+            <li>5,000 runs / day</li>
+            <li>500,000 tokens / month</li>
+            <li>50 concurrent sessions</li>
+            <li>+ multi_agent, custom</li>
+            <li>200 requests / minute</li>
+          </ul>
+          <a href="#" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crypto Payment -->
+    <section style="border-top: 1px solid var(--border);">
+      <h2>Pay with Crypto</h2>
+      <p class="section-desc">Send payment and receive your agent credentials automatically. No KYC. No signup form. Just pay and go.</p>
+
+      <div class="arch" style="max-width: none;">
+        <div class="arch-flow">
+          <div class="arch-node">💳 Send BTC/USDT</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node" style="border-color: var(--accent);">🔄 Blockonomics Webhook</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">🔑 Auto-generate License Key</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">📧 Email Credentials</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>🔐 AgentGate — Open Source Policy Engine for AI Agents</p>
+      <p style="margin-top: 0.5rem;">
+        <a href="https://github.com/youruser/agentgate">GitHub</a> ·
+        <a href="https://github.com/youruser/agentgate">Docs</a> ·
+        <a href="mailto:support@yourdomain.com">Support</a>
+      </p>
+      <p style="margin-top: 1rem; font-size: 0.75rem;">© 2026 AgentGate. MIT License.</p>
+    </footer>
+  </div>
+</body>
+</html>

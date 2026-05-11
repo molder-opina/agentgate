@@ -1,0 +1,26 @@
+{
+  "name": "@agentgate/sdk",
+  "version": "0.1.0",
+  "description": "License & Policy Enforcement SDK for AI Agents",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "agent",
+    "ai",
+    "governance",
+    "policy",
+    "quota",
+    "rate-limit",
+    "mcp",
+    "langchain",
+    "crewai",
+    "authentication",
+    "licensing",
+    "metering"
+  ],
+  "author": "AgentGate",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
